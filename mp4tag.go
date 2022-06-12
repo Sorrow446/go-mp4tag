@@ -409,8 +409,8 @@ func Write(trackPath string, _tags *Tags) error {
 		return errors.New(
 			"Failed to make temp directory.\n" + err.Error())
 	}
-	tempPath = filepath.Join(tempPath, "tmp.m4a")
 	defer os.RemoveAll(tempPath)
+	tempPath = filepath.Join(tempPath, "tmp.m4a")
 	atomsList := getAtomsList()
 	outFile, err := os.OpenFile(trackPath, os.O_RDONLY, 0755)
 	if err != nil {
