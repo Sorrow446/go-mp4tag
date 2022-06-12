@@ -1,4 +1,4 @@
-module main
+module mp4tag
 
 go 1.17
 
