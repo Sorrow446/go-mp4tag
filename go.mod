@@ -1,4 +1,4 @@
-module mp4tag
+module github.com/sorrow446/go-mp4tag
 
 go 1.17
 
