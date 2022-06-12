@@ -60,5 +60,34 @@ Write two custom fields named `CUSTOMFIELD` and `CUSTOMFIELD2`, delete genre tag
 	}
 ```
 Write cover from `cover.jpg`.
+
+## Misc
+```go
+type Tags struct {
+	Album       string
+	AlbumArtist string
+	Artist      string
+	Comment     string
+	Composer    string
+	Cover       []byte
+	Custom      map[string]string
+	Delete      []string
+	DiskNumber  int
+	DiskTotal   int
+	Genre       string
+	Label       string
+	Title       string
+	TrackNumber int
+	TrackTotal  int
+	Year        string
+}
+```
+iTunes-style metadata only.       
+Delete strings: album, albumartist, artist, comment, composer, cover, disk, genre, label, title, track, year.    
+Custom tag deletion is not implemented yet.
+
 ## Thank you
-This library relies heavily on abema's go-mp4 library.
+ go-mp4tag relies heavily on abema's go-mp4 library.
+
+## Disclaimer
+Although go-mp4tag has been thoroughly tested, I will not be responsible for the very tiny chance of any corruption to your MP4 files.
