@@ -224,7 +224,7 @@ func createAndWrite(h *mp4.ReadHandle, w *mp4.Writer, ctx mp4.Context, _tags *Ta
 	if _tags.DiskNumber > 0 {
 		disk := make([]byte, 8)
 		binary.BigEndian.PutUint32(disk, uint32(_tags.DiskNumber))
-		if _tags.DiskTotal != 0 {
+		if _tags.DiskTotal > 0 {
 			binary.BigEndian.PutUint16(disk[4:], uint16(_tags.DiskTotal))
 		}
 		err = writeMeta(w, atomsMap["Disk"], ctx, disk)
