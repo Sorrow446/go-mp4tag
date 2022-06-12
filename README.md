@@ -60,6 +60,5 @@ Write two custom fields named `CUSTOMFIELD` and `CUSTOMFIELD2`, delete genre tag
 	}
 ```
 Write cover from `cover.jpg`.
-
 ## Thank you
 This library relies heavily on abema's go-mp4 library.
