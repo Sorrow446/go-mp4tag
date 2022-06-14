@@ -90,7 +90,7 @@ Delete strings: album, albumartist, artist, comment, composer, cover, disk, genr
 Custom tag deletion is not implemented yet.
 
 ## CLI
-go-mp4 tag also has a CLI version if you'd like to call it outside of Go.
+go-mp4tag also has a CLI version if you'd like to call it outside of Go.
 ```
 Usage: mp4tag_x64.exe [--album ALBUM] [--albumArtist ALBUMARTIST] [--artist ARTIST] [--comment COMMENT] [--composer COMPOSER] [--cover COVER] [--custom CUSTOM] [--delete DELETE] [--diskNumber DISKNUMBER] [--diskTotal DISKTOTAL] [--genre GENRE] [--label LABEL] [--title TITLE] [--trackNumber TRACKNUMBER] [--trackTotal TRACKTOTAL] [--year YEAR] FILEPATH
 
