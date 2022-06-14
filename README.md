@@ -130,7 +130,7 @@ Options:
   `mp4tag_x64.exe 1.m4a --artist artist --albumArtist "album artist"`    
   Write artist and album artist tags.
   
-  `mp4tag_x64.exe 1.m4a --cover cover.jpg"`    
+  `mp4tag_x64.exe 1.m4a --cover cover.jpg`    
   Write cover from `cover.jpg`
   
   `mp4tag_x64.exe 1.m4a --custom "MY CUSTOM FIELD WITH SPACES"=value1 MYCUSTOMFIELD1="value with spaces" -d cover genre"`    
