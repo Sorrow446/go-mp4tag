@@ -9,7 +9,7 @@ type Args struct {
 	Copyright   string            `arg:"--copyright" help:"Write copyright tag."`
 	Cover       string            `arg:"--cover" help:"Path of cover to write. JPEG is recommended."`
 	Custom      map[string]string `arg:"--custom" help:"Write custom tags. Multiple tags with the same field name can be written.\n\t\t\t Example: \"--custom MYCUSTOMFIELD1=value1 MYCUSTOMFIELD2=value2\""`
-	Delete      []string          `arg:"-d, --delete" help:"Tags to delete.\n\t\t\t Options: album, albumartist, artist, comment, composer, cover, disk, genre, label, title, track, year.\n\t\t\t Example: \"-d album albumartist\""`
+	Delete      []string          `arg:"-d, --delete" help:"Tags to delete.\n\t\t\t Options: album, albumartist, artist, comment, composer, copyright, cover, disk, genre, label, title, track, year.\n\t\t\t Example: \"-d album albumartist\""`
 	DiskNumber  int               `arg:"--diskNumber" help:"Write disk number tag."`
 	DiskTotal   int               `arg:"--diskTotal" help:"Write disk total tag. Can't be written without disk number tag."`
 	FilePath    string            `arg:"positional, required" help:"Path of file to write to."`
