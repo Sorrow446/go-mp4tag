@@ -45,6 +45,7 @@ func parseTags(args *Args) (*Tags, error) {
 		Artist:      args.Artist,
 		Comment:     args.Comment,
 		Composer:    args.Composer,
+		Copyright:   args.Copyright,
 		Custom:      args.Custom,
 		Delete:      args.Delete,
 		DiskNumber:  args.DiskNumber,

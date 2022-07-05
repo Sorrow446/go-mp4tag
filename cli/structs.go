@@ -6,6 +6,7 @@ type Args struct {
 	Artist      string            `arg:"--artist" help:"Write artist tag."`
 	Comment     string            `arg:"--comment" help:"Write comment tag."`
 	Composer    string            `arg:"--composer" help:"Write composer tag."`
+	Copyright   string            `arg:"--copyright" help:"Write copyright tag."`
 	Cover       string            `arg:"--cover" help:"Path of cover to write. JPEG is recommended."`
 	Custom      map[string]string `arg:"--custom" help:"Write custom tags. Multiple tags with the same field name can be written.\n\t\t\t Example: \"--custom MYCUSTOMFIELD1=value1 MYCUSTOMFIELD2=value2\""`
 	Delete      []string          `arg:"-d, --delete" help:"Tags to delete.\n\t\t\t Options: album, albumartist, artist, comment, composer, cover, disk, genre, label, title, track, year.\n\t\t\t Example: \"-d album albumartist\""`
@@ -26,6 +27,7 @@ type Tags struct {
 	Artist      string
 	Comment     string
 	Composer    string
+	Copyright   string
 	Cover       []byte
 	Custom      map[string]string
 	Delete      []string

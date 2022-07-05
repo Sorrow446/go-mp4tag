@@ -6,6 +6,7 @@ type Tags struct {
 	Artist      string
 	Comment     string
 	Composer    string
+	Copyright   string
 	Cover       []byte
 	Custom      map[string]string
 	Delete      []string
