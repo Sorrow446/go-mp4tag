@@ -86,7 +86,7 @@ type Tags struct {
 }
 ```
 iTunes-style metadata only.       
-Delete strings: album, albumartist, artist, comment, composer, cover, disk, genre, label, title, track, year.    
+Delete strings: album, albumartist, artist, comment, composer, copyright, cover, disk, genre, label, title, track, year.    
 Custom tag deletion is not implemented yet.
 
 ## CLI
@@ -111,7 +111,7 @@ Options:
                          Example: "--custom MYCUSTOMFIELD1=value1 MYCUSTOMFIELD2=value2"
   --delete DELETE, -d DELETE
                          Tags to delete.
-                         Options: album, albumartist, artist, comment, composer, cover, disk, genre, label, title, track, year.
+                         Options: album, albumartist, artist, comment, composer, copyright, cover, disk, genre, label, title, track, year.
                          Example: "-d album albumartist"
   --diskNumber DISKNUMBER
                          Write disk number tag.
