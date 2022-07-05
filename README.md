@@ -71,6 +71,7 @@ type Tags struct {
 	Artist      string
 	Comment     string
 	Composer    string
+	Copyright   string
 	Cover       []byte
 	Custom      map[string]string
 	Delete      []string
@@ -91,7 +92,7 @@ Custom tag deletion is not implemented yet.
 ## CLI
 go-mp4tag also has a CLI version if you'd like to call it outside of Go.
 ```
-Usage: mp4tag_x64.exe [--album ALBUM] [--albumArtist ALBUMARTIST] [--artist ARTIST] [--comment COMMENT] [--composer COMPOSER] [--cover COVER] [--custom CUSTOM] [--delete DELETE] [--diskNumber DISKNUMBER] [--diskTotal DISKTOTAL] [--genre GENRE] [--label LABEL] [--title TITLE] [--trackNumber TRACKNUMBER] [--trackTotal TRACKTOTAL] [--year YEAR] FILEPATH
+Usage: mp4tag_x64.exe [--album ALBUM] [--albumArtist ALBUMARTIST] [--artist ARTIST] [--comment COMMENT] [--composer COMPOSER] [--copyright COPYRIGHT] [--cover COVER] [--custom CUSTOM] [--delete DELETE] [--diskNumber DISKNUMBER] [--diskTotal DISKTOTAL] [--genre GENRE] [--label LABEL] [--title TITLE] [--trackNumber TRACKNUMBER] [--trackTotal TRACKTOTAL] [--year YEAR] FILEPATH
 
 Positional arguments:
   FILEPATH               Path of file to write to.
@@ -103,6 +104,8 @@ Options:
   --artist ARTIST        Write artist tag.
   --comment COMMENT      Write comment tag.
   --composer COMPOSER    Write composer tag.
+  --copyright COPYRIGHT
+                         Write copyright tag.
   --cover COVER          Path of cover to write. JPEG is recommended.
   --custom CUSTOM        Write custom tags. Multiple tags with the same field name can be written.
                          Example: "--custom MYCUSTOMFIELD1=value1 MYCUSTOMFIELD2=value2"
