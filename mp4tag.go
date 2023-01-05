@@ -27,6 +27,7 @@ var atomsMap = map[string]mp4.BoxType{
 	"Title":       {'\251', 'n', 'a', 'm'},
 	"Track":       {'t', 'r', 'k', 'n'},
 	"Year":        {'\251', 'd', 'a', 'y'},
+	"Rating":      {'r', 't', 'n', 'g'},
 }
 
 func copy(w *mp4.Writer, h *mp4.ReadHandle) error {
@@ -232,8 +233,14 @@ func createAndWrite(h *mp4.ReadHandle, w *mp4.Writer, ctx mp4.Context, _tags *Ta
 			return err
 		}
 	}
+	if _tags.Rating > 0 {
+		err = writeMeta(w, atomsMap["Rating"], ctx, []byte{_tags.Rating})
+		if err != nil {
+			return err
+		}
+	}
 	for tagName, needCreate := range atoms {
-		if tagName == "Cover" || tagName == "Track" || tagName == "Disk" {
+		if tagName == "Cover" || tagName == "Track" || tagName == "Disk" || tagName == "Rating" {
 			continue
 		}
 		val := reflect.ValueOf(*_tags).FieldByName(tagName).String()
@@ -319,6 +326,10 @@ func writeExisting(h *mp4.ReadHandle, w *mp4.Writer, _tags *Tags, currentKey str
 		// 	binary.BigEndian.PutUint16(trkn[4:], uint16(_tags.TrackTotal))
 		// }
 		// // err := writeMeta(w, h.BoxInfo.Type, ctx, trkn)
+	} else if currentKey == "Rating" {
+		if _tags.Rating < 1 {
+			return true, nil
+		}
 	} else {
 		toWrite := reflect.ValueOf(*_tags).FieldByName(currentKey).String()
 		if toWrite == "" {
