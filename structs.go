@@ -18,4 +18,5 @@ type Tags struct {
 	TrackNumber int
 	TrackTotal  int
 	Year        string
+	Rating      uint8
 }
