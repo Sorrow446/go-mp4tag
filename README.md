@@ -90,3 +90,40 @@ if err != nil {
 	panic(err)
 }
 ```
+
+### Deletion Strings
+Case insensitive.
+- album
+- albumartist
+- albumrtistsort
+- albumsort
+- allcustom
+- allpictures
+- alltags
+- artist
+- artistsort
+- bpm
+- comment
+- composer
+- composersort
+- conductor
+- copyright
+- customgenre
+- date
+- description
+- director
+- discnumber/disknumber
+- disctotal/disktotal
+- genre
+- itunesadvisory
+- itunesalbumid
+- itunesartistid
+- lyrics
+- narrator
+- picture:<position index starting from 1>
+- publisher
+- title
+- titlesort
+- tracknumber
+- tracktotal
+- year
