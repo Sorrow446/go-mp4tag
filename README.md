@@ -46,27 +46,27 @@ for idx, pic := range tags.Pictures {
 
 Write two covers:
 ```go
-	picOneData, err := os.ReadFile("1.jpg")
-	if err != nil {
-		panic(err)
-	}
+picOneData, err := os.ReadFile("1.jpg")
+if err != nil {
+	panic(err)
+}
 
-	picTwoData, err := os.ReadFile("2.jpg")
-	if err != nil {
-		panic(err)
-	}
+picTwoData, err := os.ReadFile("2.jpg")
+if err != nil {
+	panic(err)
+}
 
-	picOne := &mp4tag.MP4Picture{Data: picOneData}
-	picTwo := &mp4tag.MP4Picture{Data: picTwoData}
+picOne := &mp4tag.MP4Picture{Data: picOneData}
+picTwo := &mp4tag.MP4Picture{Data: picTwoData}
 
-	tags := &mp4tag.MP4Tags{
-		Pictures: []*mp4tag.MP4Picture{picOne, picTwo},
-	}
+tags := &mp4tag.MP4Tags{
+	Pictures: []*mp4tag.MP4Picture{picOne, picTwo},
+}
 
-	err = mp4.Write(tags, []string{})
-	if err != nil {
-		panic(err)
-	}
+err = mp4.Write(tags, []string{})
+if err != nil {
+	panic(err)
+}
 ```
 
 
