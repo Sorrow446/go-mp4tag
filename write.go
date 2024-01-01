@@ -351,8 +351,7 @@ func (mp4 MP4) readToOffset(f *os.File, startOffset int64) error {
 		readI64 := int64(read)
 		totalRead += readI64
 		if totalRead > startOffset {
-			// Okay?
-			_, err = f.Write(buf[:totalRead-readI64+startOffset])
+			_, err = f.Write(buf[:readI64+startOffset-totalRead])
 			if err != nil {
 				return err
 			}
