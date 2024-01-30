@@ -62,6 +62,7 @@ type MP4 struct {
 	f *os.File
 	path string
 	size int64
+	upperCustom bool
 }
 
 type MP4Box struct {
@@ -297,6 +298,7 @@ type MP4Tags struct {
 	ItunesArtistID int32
 	Lyrics string
 	Narrator string
+	OtherCustom map[string][]string
 	Pictures []*MP4Picture
 	Publisher string
 	Title string

@@ -229,7 +229,18 @@ func (mp4 MP4) readTrknDisk(boxes MP4Boxes, boxName string) (int16, int16, error
 	return num, total, nil
 }
 
-func (mp4 MP4) readCustom(boxes MP4Boxes) (map[string]string, error) {
+func addToOthers(others map[string][]string, key, val string) map[string][]string {
+	existingOthers, ok := others[key]
+	if ok {
+		existingOthers = append(existingOthers, val)
+		others[key] = existingOthers
+	} else {
+		others[key] = []string{val}
+	}
+	return others
+}
+
+func (mp4 MP4) readCustom(boxes MP4Boxes) (map[string]string, map[string][]string, error) {
 	var (
 		names []string
 		values []string
@@ -237,38 +248,67 @@ func (mp4 MP4) readCustom(boxes MP4Boxes) (map[string]string, error) {
 	path := "moov.udta.meta.ilst.----"
 	nameBoxes := boxes.getBoxesByPath(path+".name")
 	if nameBoxes == nil {
-		return nil, nil
+		return nil, nil, nil
 	}
 	for _, box := range nameBoxes {
 		_, err := mp4.f.Seek(box.StartOffset+12, io.SeekStart)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		name, err := mp4.readString(box.BoxSize-12)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
+		}
+		if mp4.upperCustom {
+			name = strings.ToUpper(name)
 		}
 		names = append(names, name)
 	}
 
+	others := map[string][]string{}
+
 	dataBoxes := boxes.getBoxesByPath(path+".data")
+
+	var (
+		prev int64
+		idx int
+	)
+
 	for _, box := range dataBoxes {
 		_, err := mp4.f.Seek(box.StartOffset+16, io.SeekStart)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		value, err := mp4.readString(box.BoxSize-16)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
+		}
+		if box.StartOffset == prev {
+			others = addToOthers(others, names[idx-1], value)
+			prev = box.EndOffset
+			continue
 		}
 		values = append(values, value)
+		prev = box.EndOffset
+		idx++
 	}
 
 	custom := map[string]string{}
 	for idx, name := range names {
-		custom[name] = values[idx]
+		_, ok := custom[name]
+		if ok {
+			existingOthers, ok := others[name]
+			if ok {
+				existingOthers = append(existingOthers, values[idx])
+				others[name] = existingOthers			
+			} else {
+				others[name] = []string{values[idx]}
+			}
+		} else {
+			custom[name] = values[idx]
+		}
 	}
-	return custom, nil
+	return custom, others, nil
 }
 
 func (mp4 MP4) readITAlbumID(boxes MP4Boxes) (int32, error) {
@@ -373,7 +413,7 @@ func (mp4 MP4) readTags(boxes MP4Boxes) (*MP4Tags, error) {
 	if err != nil  {
 		return nil, err
 	}
-	custom, err := mp4.readCustom(boxes)
+	custom, otherCustom, err := mp4.readCustom(boxes)
 	if err != nil  {
 		return nil, err
 	}	
@@ -455,6 +495,7 @@ func (mp4 MP4) readTags(boxes MP4Boxes) (*MP4Tags, error) {
 		ItunesArtistID: artistID,
 		Lyrics: lyrics,
 		Narrator: narrator,
+		OtherCustom: otherCustom,
 		Pictures: pics,
 		Publisher: publisher,
 		Title: title,

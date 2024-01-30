@@ -20,6 +20,16 @@ func overwriteTags(mergedTags, tags *MP4Tags, delStrings []string) *MP4Tags{
 	} else if containsStr(delStrings, "allcustom") {
 		mergedTags.Custom = map[string]string{}
 	}
+	if containsStr(delStrings, "allothercustom") {
+		mergedTags.OtherCustom = map[string][]string{}
+	}
+
+	if mergedTags.Custom == nil {
+		mergedTags.Custom = map[string]string{}
+	}
+	if mergedTags.OtherCustom == nil {
+		mergedTags.OtherCustom = map[string][]string{}
+	}
 
 	if containsStr(delStrings,  "album") {
 		mergedTags.Album = ""
@@ -265,9 +275,25 @@ func overwriteTags(mergedTags, tags *MP4Tags, delStrings []string) *MP4Tags{
 	}
 
 	for k, v := range tags.Custom {
+		if containsStr(delStrings, "custom:"+k) {
+			continue
+		}
 		if v != "" {
 			mergedTags.Custom[k] = v
 		}
+	}
+
+	for k, v := range tags.OtherCustom {
+		if containsStr(delStrings, "custom:"+k) || len(v) < 1 {
+			continue
+		}
+		_, ok := mergedTags.OtherCustom[k]
+		if ok {
+			mergedTags.OtherCustom[k] = append(mergedTags.OtherCustom[k], v...)
+		} else {
+			mergedTags.OtherCustom[k] = v
+		}
+
 	}
 
 	var filteredPics []*MP4Picture
@@ -595,13 +621,25 @@ func writeItunesArtistID(f *os.File, artistID int32) error {
 	return err
 }
 
-func writeCustom(f *os.File, name, value string) error {
-	nameUpperBytes := []byte(strings.ToUpper(name))
+func writeCustom(f *os.File, name, value string, upper bool, others map[string][]string) error {	
 	valueBytes := []byte(value)
-	nameSize := len(nameUpperBytes)
 	valueSize := len(valueBytes)
 
-	sizeBytes := putI32BE(int32(nameSize+valueSize)+64)
+	if upper {
+		name = strings.ToUpper(name)
+	}
+	nameUpperBytes := []byte(name)
+	nameSize := len(nameUpperBytes)
+
+	totalSize := nameSize+valueSize+64
+	otherCust, _ := others[name]
+
+	for _, other := range otherCust {
+		totalSize += len([]byte(other)) + 16
+	}
+
+	// 48
+	sizeBytes := putI32BE(int32(totalSize))
 	_, err := f.Write(sizeBytes)
 	if err != nil {
 		return err
@@ -658,7 +696,35 @@ func writeCustom(f *os.File, name, value string) error {
 		return err
 	}
 	_, err = f.Write(valueBytes)
-	return err
+	if err != nil {
+		return err
+	}
+
+
+	for _, v := range otherCust {
+		valueBytes = []byte(v)
+		valueSize = len(valueBytes)
+		sizeBytes = putI32BE(int32(valueSize)+16)
+		_, err = f.Write(sizeBytes)
+		if err != nil {
+			return err
+		}
+		_, err = f.WriteString("data")
+		if err != nil {
+			return err
+		}
+		_, err = f.Write(
+			[]byte{0x0, 0x0, 0x0, 0x01, 0x0, 0x0, 0x0, 0x0})
+		if err != nil {
+			return err
+		}
+		_, err = f.Write(valueBytes)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func getPicFormat(imageType ImageType, magic []byte) uint8 {
@@ -993,7 +1059,7 @@ func (mp4 MP4) writeTags(boxes MP4Boxes, tags *MP4Tags, tempPath string) error {
 	}
 	
 	for k, v := range tags.Custom {
-		err = writeCustom(f, k, v)
+		err = writeCustom(f, k, v, mp4.upperCustom, tags.OtherCustom)
 		if err != nil {
 			return err
 		}
