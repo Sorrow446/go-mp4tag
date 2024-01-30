@@ -98,6 +98,7 @@ Case insensitive.
 - albumrtistsort
 - albumsort
 - allcustom
+- allothercustom
 - allpictures
 - alltags
 - artist
